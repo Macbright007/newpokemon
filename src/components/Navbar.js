@@ -1,28 +1,31 @@
 import "./Styles.css";
-import logo from "../images/logo.svg"
-import { useContext} from "react";
-import PokemonContext from "../contexts/PokemonContext"
-
+import React from "react";
+import logo from "../images/logo.svg";
+import { useContext } from "react";
+import PokemonContext from "../contexts/PokemonContext";
 
 const Navbar = () => {
-  const { pokemons} = useContext(PokemonContext)
+  const { favouritePokemon } = useContext(PokemonContext);
 
   return (
-    <nav className="nav__cont"> 
-        <div className="cont__left">
+    <nav className="nav__cont">
+      <div className="cont__left">
+        <div className="logoSide">
+          <img
+            src={logo}
+            alt="logo"
+            style={{ width: "40px"}}
+          />
           <p>Pokedex</p>
-          <div className="seen">
-            <div className="logo__cont">
-              <img
-                src={logo}
-                alt="logo"
-                style={{ width: "30px", marginRight: 10 }}
-              />
-              <p>{pokemons.length}</p>
-            </div>
+        </div>
+        <div className="seen">
+          <div className="logo__cont">
+            <p style={{ fontSize: 25, marginRight: 50 }}>Favourites</p>
+            <p style={{ fontSize: 25 }}>{favouritePokemon.length}</p>
           </div>
         </div>
-        <h3 style={{color: "white"}}>A -&gt; Z</h3>
+      </div>
+      <h3 style={{ color: "white" }}>A -&gt; Z</h3>
     </nav>
   );
 };

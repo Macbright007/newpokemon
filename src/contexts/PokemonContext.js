@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import React from 'react';
 
 
 export const API_url = "https://pokeapi.co/api/v2/pokemon/";
@@ -8,15 +9,15 @@ const PokemonContext = createContext();
 
   
   // function to get pokemon from localStorage
-  // const getPokemonsFromStorage = () => {
-  //   const favPokemons = localStorage.getItem("favPokemons");
-  //   const parsedPokemons = favPokemons ? JSON.parse(favPokemons) : favPokemons;
-  //   return Array.isArray(parsedPokemons) ? parsedPokemons : [];
-  // };
+  const getPokemonsFromStorage = () => {
+    const favPokemons = localStorage.getItem("favPokemons");
+    const parsedPokemons = favPokemons ? JSON.parse(favPokemons) : favPokemons;
+    return Array.isArray(parsedPokemons) ? parsedPokemons : [];
+  };
 
 export const PokemonProvider = ({ children }) => {
   const [pokemons, setPokemons] = useState([]);
-  // const [favouritePokemon, setFavouritePokemon] = useState(getPokemonsFromStorage())
+  const [favouritePokemon, setFavouritePokemon] = useState(getPokemonsFromStorage())
   const [isloading, setIsLoading] = useState(false);
   // const [pageNum, SetPageNum] = useState(1);
 
@@ -33,31 +34,29 @@ export const PokemonProvider = ({ children }) => {
       const results = await axios.get(item.url);
       setPokemons((state) => {
         state = [...state, results.data];
-        // state.sort((a,b) => a.id > b.id ? 1 : -1)
         return state;
-        // return state.sort((a,b) =>  a.id - b.id);
       });
       setIsLoading(false);
     });
   };
 
   // function to add pokemon to favourite page
-  // const addToFavorite = (pokemon) => {
-  //   setFavouritePokemon((prevState) => [...prevState, pokemon]);
+  const addToFavorite = (pokemon) => {
+    setFavouritePokemon((prevState) => [...prevState, pokemon]);
    
-  // };
+  };
 
-  // useEffect(() => {
-  //   localStorage.setItem(
-  //     "favPokemons",
-  //     JSON.stringify(favouritePokemon)
-  //   );
-  // }, [favouritePokemon])
+  useEffect(() => {
+    localStorage.setItem(
+      "favPokemons",
+      JSON.stringify(favouritePokemon)
+    );
+  }, [favouritePokemon])
 
   // function to remove pokemon from favourite page
-  // const removeFromFavourite = (pokemonId) => {
-  //   setFavouritePokemon(favouritePokemon.filter(fav => fav.id !== pokemonId))
-  // };
+  const removeFromFavourite = (pokemonId) => {
+    setFavouritePokemon(favouritePokemon.filter(fav => fav.id !== pokemonId))
+  };
 
   let offset = 0;
   const limit = 20;
@@ -80,9 +79,9 @@ export const PokemonProvider = ({ children }) => {
       value={{
         pokemons,
         isloading,
-        // addToFavorite,
-        // removeFromFavourite,
-        // favouritePokemon,
+        addToFavorite,
+        removeFromFavourite,
+        favouritePokemon,
         // handleScroll
       }}
     >
